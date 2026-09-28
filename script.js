@@ -3,7 +3,6 @@
 // WEBSITE PHOTO GALLERY
 // ==========================================
 
-// All website photos
 const photoFiles = [
   {
     file: "Herringbone_Floor_Detail.jpg",
@@ -52,20 +51,14 @@ const photoFiles = [
   }
 ];
 
-
-// ==========================================
-// BUILD GALLERY
-// ==========================================
-
 const gallery = document.getElementById("gallery");
 
 if (gallery) {
 
-  // Clear the old gallery
   gallery.innerHTML = "";
 
-  // Create category buttons
   const filterContainer = document.createElement("div");
+
   filterContainer.className = "gallery-filters";
 
   const categories = [
@@ -99,9 +92,11 @@ if (gallery) {
     filterContainer.appendChild(button);
   });
 
-  gallery.parentNode.insertBefore(filterContainer, gallery);
+  gallery.parentNode.insertBefore(
+    filterContainer,
+    gallery
+  );
 
-  // Display all photos when page loads
   displayPhotos("All");
 }
 
@@ -119,10 +114,11 @@ function displayPhotos(category) {
   const photosToDisplay =
     category === "All"
       ? photoFiles
-      : photoFiles.filter(photo => photo.category === category);
+      : photoFiles.filter(
+          photo => photo.category === category
+        );
 
-
-  photosToDisplay.forEach((photo, index) => {
+  photosToDisplay.forEach(photo => {
 
     const item = document.createElement("button");
 
@@ -134,36 +130,29 @@ function displayPhotos(category) {
       `Open ${photo.title}`
     );
 
-
     const img = document.createElement("img");
 
-    img.src = `photos/${photo.file}`;
+    // PHOTOS ARE IN THE MAIN WEBSITE FOLDER
+    img.src = photo.file;
 
     img.alt =
       `For His Glory Construction & Repairs - ${photo.title}`;
 
     img.loading = "lazy";
 
-
     const caption = document.createElement("span");
 
     caption.className = "gallery-caption";
     caption.textContent = photo.title;
 
-
     item.appendChild(img);
     item.appendChild(caption);
 
-
     item.addEventListener("click", () => {
-
       openLightbox(photo);
-
     });
 
-
     gallery.appendChild(item);
-
   });
 }
 
@@ -174,17 +163,15 @@ function displayPhotos(category) {
 
 function openLightbox(photo) {
 
-  let lightbox = document.getElementById("photo-lightbox");
+  let lightbox =
+    document.getElementById("photo-lightbox");
 
-
-  // Create lightbox if it doesn't already exist
   if (!lightbox) {
 
     lightbox = document.createElement("div");
 
     lightbox.id = "photo-lightbox";
     lightbox.className = "photo-lightbox";
-
 
     lightbox.innerHTML = `
       <button
@@ -208,27 +195,26 @@ function openLightbox(photo) {
       </div>
     `;
 
-
     document.body.appendChild(lightbox);
 
-
-    // Close button
     lightbox
       .querySelector(".lightbox-close")
-      .addEventListener("click", closeLightbox);
+      .addEventListener(
+        "click",
+        closeLightbox
+      );
 
+    lightbox.addEventListener(
+      "click",
+      event => {
 
-    // Close when clicking outside image
-    lightbox.addEventListener("click", event => {
+        if (event.target === lightbox) {
+          closeLightbox();
+        }
 
-      if (event.target === lightbox) {
-        closeLightbox();
       }
-
-    });
-
+    );
   }
-
 
   const image =
     lightbox.querySelector(".lightbox-image");
@@ -236,14 +222,13 @@ function openLightbox(photo) {
   const title =
     lightbox.querySelector(".lightbox-title");
 
-
-  image.src = `photos/${photo.file}`;
+  // PHOTOS ARE IN THE MAIN WEBSITE FOLDER
+  image.src = photo.file;
 
   image.alt =
     `For His Glory Construction & Repairs - ${photo.title}`;
 
   title.textContent = photo.title;
-
 
   lightbox.classList.add("open");
 
@@ -265,30 +250,31 @@ function closeLightbox() {
   lightbox.classList.remove("open");
 
   document.body.style.overflow = "";
-
 }
 
 
 // ==========================================
-// ESCAPE KEY CLOSES PHOTO
+// ESCAPE KEY
 // ==========================================
 
-document.addEventListener("keydown", event => {
+document.addEventListener(
+  "keydown",
+  event => {
 
-  if (event.key === "Escape") {
-
-    closeLightbox();
+    if (event.key === "Escape") {
+      closeLightbox();
+    }
 
   }
-
-});
+);
 
 
 // ==========================================
-// ADD BASIC GALLERY STYLING
+// GALLERY STYLES
 // ==========================================
 
-const galleryStyle = document.createElement("style");
+const galleryStyle =
+  document.createElement("style");
 
 galleryStyle.textContent = `
 
